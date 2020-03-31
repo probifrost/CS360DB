@@ -111,7 +111,7 @@ Four EduBfM_GetTrain(
 	index = edubfm_LookUp(trainId, type);
 	if (index < 0) {
 		index = edubfm_AllocTrain(type);
-		BI_KEY(type, index) = trainId;
+		BI_KEY(type, index).pageNo = trainId;
 		BI_FIXED(type, index) = 1;
 		BI_BITS(type, index) = BI_BITS(type, index) || REFER;
 		edubfm_Insert(trainId, index, type);

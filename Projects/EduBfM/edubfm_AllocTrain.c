@@ -113,10 +113,10 @@ Four edubfm_AllocTrain(
 			break;
 		}
 	}
-	edubfm_FlushTrain(BI_KEY(type, victim));
+	edubfm_FlushTrain(&BI_KEY(type, victim),type);
 	BI_BITS(type, victim) = ALL_0;
 	BI_NEXTVICTIM(type) = (victim + 1) % BI_NBUFS(type);
-	edubfm_Delete(BI_KEY(type, victim), type);
+	edubfm_Delete(&BI_KEY(type, victim), type);
    
     return( victim );
     

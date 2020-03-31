@@ -59,7 +59,6 @@
 
 #include "EduBfM_common.h"
 #include "EduBfM_Internal.h"
-#include "edubfm_Hash.c"
 
 
 
@@ -91,7 +90,7 @@ Four EduBfM_FreeTrain(
 
     /*@ check if the parameter is valid. */
     if (IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);	
-	Four idx = edubfm_LookUp(BFM_HASH(trainId, type), type);
+	Four idx = edubfm_LookUp(trainId, type);
 	if (idx < 1) {
 		return (eNOTFOUND_BFM);
 	}

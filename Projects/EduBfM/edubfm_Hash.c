@@ -209,13 +209,13 @@ Four edubfm_LookUp(
 
     CHECKKEY(key);    /*@ check validity of key */
 	hashValue = BFM_HASH(key, type);
-	
+	Four idx;
 	if (BI_HASHTABLEENTRY(type, hashValue) == NIL) {
 		return(NOTFOUND_IN_HTABLE);
 	}
 	else {
-		Four idx = BI_HASHTABLEENTRY(type, hashValue);
-		while (BI_KEY(type, idx) != key) {
+		idx = BI_HASHTABLEENTRY(type, hashValue);
+		while (EQUALKEY(&(BI_KEY(type, idx)),key)) {
 			idx = BI_NEXTHASHENTRY(type, idx);
 		}
 	}

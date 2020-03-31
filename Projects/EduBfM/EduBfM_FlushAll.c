@@ -88,7 +88,7 @@ Four EduBfM_FlushAll(void)
 		Two elem = bufInfo[type].nBufs;
 		for (i = 0; i++; i < elem) {
 			if (BI_BITS(type, i) && DIRTY) {
-				e = edubfm_FlushTrain(BI_KEY(type,i), type);
+				e = edubfm_FlushTrain(BI_KEY(type,i).pageNo, type);
 				if (e < 0) {
 					return (e);
 				}

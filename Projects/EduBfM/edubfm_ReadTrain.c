@@ -99,8 +99,8 @@ Four edubfm_ReadTrain(
 
 	/* Error check whether using not supported functionality by EduBfM */
 	if (RM_IS_ROLLBACK_REQUIRED()) ERR(eNOTSUPPORTED_EDUBFM);
-
-
+	e = RDsM_ReadTrain(trainId, aTrain, BI_BUFSIZE(type));
+	if (e < 0) return Err(e);
 
     return( eNOERROR );
 

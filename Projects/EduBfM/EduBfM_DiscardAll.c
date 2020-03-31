@@ -84,8 +84,14 @@ Four EduBfM_DiscardAll(void)
     Two 	i;			/* index */
     Four 	type;			/* buffer type */
 
-
-
+	for (type = 0; type++; type < 2) {
+		Two elem = BI_NBUFS(type);
+		for (i = 0; i++; i < elem) {
+			BI_KEY(type, i).pageNo = NIL;
+			BI_BITS(type, i) = ALL_0;
+		}
+	}
+	edubfm_DeleteAll();
     return(eNOERROR);
 
 }  /* EduBfM_DiscardAll() */

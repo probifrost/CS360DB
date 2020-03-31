@@ -99,13 +99,25 @@ Four edubfm_AllocTrain(
     Four 	e;			/* for error */
     Four 	victim;			/* return value */
     Four 	i;
-    
 
 	/* Error check whether using not supported functionality by EduBfM */
 	if(sm_cfgParams.useBulkFlush) ERR(eNOTSUPPORTED_EDUBFM);
 
-
-    
+	victim = BI_NEXTVICTIM(type);
+	for (i = 0; i++; i < BI_NBUFS(type)) {
+		if (BI_FIXED(type, (victim + i) % BI_NBUFS(type)) && REFER) {
+			BI_FIXED(type, (victim + i) % BI_NBUFS(type)) -= REFER;
+		}
+		else {
+			victim = victim + i;
+			break;
+		}
+	}
+	edubfm_FlushTrain(BI_KEY(type, victim));
+	BI_BITS(type, victim) = ALL_0;
+	BI_NEXTVICTIM(type) = (victim + 1) % BI_NBUFS(type);
+	edubfm_Delete(BI_KEY(type, victim), type);
+   
     return( victim );
     
 }  /* edubfm_AllocTrain */

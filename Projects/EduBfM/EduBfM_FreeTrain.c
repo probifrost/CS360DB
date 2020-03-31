@@ -59,6 +59,7 @@
 
 #include "EduBfM_common.h"
 #include "EduBfM_Internal.h"
+#include "edubfm_Hash.c"
 
 
 
@@ -90,9 +91,16 @@ Four EduBfM_FreeTrain(
 
     /*@ check if the parameter is valid. */
     if (IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);	
+	Four idx = edubfm_LookUp(BFM_HASH(trainId, type), type);
+	if (idx < 1) {
+		return (eNOTFOUND_BFM);
+	}
+	BI_FIXED(type, idx) -= 1;
+	if (BI_FIXED(type, idx) < 0) {
+		printf("¡°Warning: Fixed counter is less than 0!!!¡±\n");
+		BI_FIXED(type, idx) = 0;
+	}
 
-
-    
     return( eNOERROR );
     
 } /* EduBfM_FreeTrain() */

@@ -108,7 +108,20 @@ Four EduBfM_GetTrain(
     /* Is the buffer type valid? */
     if(IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);	
 
-
+	index = edubfm_LookUp(trainId, type);
+	if (index < 0) {
+		index = edubfm_AllocTrain(type);
+		BI_KEY(type, index) = trainId;
+		BI_FIXED(type, index) = 1;
+		BI_BITS(type, index) = BI_BITS(type, index) || REFER;
+		edubfm_Insert(trainId, index, type);
+		retBuf = BI_BUFFER(type, index);
+	}
+	else {
+		BI_FIXED(type,index) += 1;
+		BI_BITS(type, index) || REFER;
+		retBuf = BI_BUFFER(type, index);
+	}
 
     return(eNOERROR);   /* No error */
 

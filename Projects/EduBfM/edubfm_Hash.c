@@ -110,13 +110,26 @@ Four edubfm_Insert(
     Four 		i;			
     Two  		hashValue;
 
-
     CHECKKEY(key);    /*@ check validity of key */
+	hashValue = BFM_HASH(key, type);
 
     if( (index < 0) || (index > BI_NBUFS(type)) )
         ERR( eBADBUFINDEX_BFM );
 
-   
+	//충돌이 일어나지 않았을때
+	if (BI_HASHTABLEENTRY(type, hashValue) == NIL) {
+		BI_HASHTABLEENTRY(type,hashValue) = index;
+	}	
+	//충돌이 일어났을때
+	else {
+		Two curidx = *(BI_HASHTABLE(type) + hashValue);
+		Two idx = BI_NEXTHASHENTRY(type, curidx);
+		while (idx != NIL) {
+			curidx = idx;
+			idx = BI_NEXTHASHENTRY(type, idx);
+		}
+		BI_NEXTHASHENTRY(type, curidx) = index;
+	}
 
     return( eNOERROR );
 
@@ -151,10 +164,18 @@ Four edubfm_Delete(
 
 
     CHECKKEY(key);    /*@ check validity of key */
+	hashValue = BFM_HASH(key, type);
 
+	if (BI_HASHTABLEENTRY(type, hashValue) == NIL) {
+		return(eNOTFOUND_BFM);
+	}
+	else {
+		Two idx = BI_HASHTABLEENTRY(type, hashValue);
+		Two nextidx = BI_NEXTHASHENTRY(type, idx);
+		BI_HASHTABLEENTRY(type, hashValue) == nextidx;
+	}
 
-
-    ERR( eNOTFOUND_BFM );
+	return(eNOERROR);
 
 }  /* edubfm_Delete */
 
@@ -187,10 +208,20 @@ Four edubfm_LookUp(
 
 
     CHECKKEY(key);    /*@ check validity of key */
+	hashValue = BFM_HASH(key, type);
+	
+	if (BI_HASHTABLEENTRY(type, hashValue) == NIL) {
+		return(NOTFOUND_IN_HTABLE);
+	}
+	else {
+		Four idx = BI_HASHTABLEENTRY(type, hashValue);
+		while (BI_KEY(type, idx) != key) {
+			idx = BI_NEXTHASHENTRY(type, idx);
+		}
+	}
 
-
-
-    return(NOTFOUND_IN_HTABLE);
+	return idx;
+    
     
 }  /* edubfm_LookUp */
 
@@ -217,8 +248,12 @@ Four edubfm_DeleteAll(void)
     Two 	i;
     Four        tableSize;
     
-
-
+	for (i = 0; i++; i < 2) {
+		tableSize = HASHTABLESIZE(i);
+		for (Two m = 0; m++; m < tableSize) {
+			BI_HASHTABLEENTRY(i, m) = NIL;
+		}
+	}
     return(eNOERROR);
 
 } /* edubfm_DeleteAll() */ 

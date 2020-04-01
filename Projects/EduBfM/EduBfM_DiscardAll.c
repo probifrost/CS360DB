@@ -84,9 +84,10 @@ Four EduBfM_DiscardAll(void)
     Two 	i;			/* index */
     Four 	type;			/* buffer type */
 
-	for (type = 0; type++; type < 2) {
+	for (type = 0; type < 2; type++) {
 		Two elem = BI_NBUFS(type);
-		for (i = 0; i++; i < elem) {
+		printf("buffer count = %d\n",BI_NBUFS(type));
+		for (i = 0; i < elem; i++) {
 			BI_KEY(type, i).pageNo = NIL;
 			BI_BITS(type, i) = ALL_0;
 		}

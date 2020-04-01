@@ -110,6 +110,7 @@ Four edubfm_AllocTrain(
 		}
 		else {
 			victim = victim + i;
+			printf("victim array index = %d",victim);
 			break;
 		}
 	}

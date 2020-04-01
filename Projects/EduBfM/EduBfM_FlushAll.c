@@ -84,7 +84,7 @@ Four EduBfM_FlushAll(void)
     Four        e;                      /* error */
     Two         i;                      /* index */
     Four        type;                   /* buffer type */
-	for (Two type = 0; type++; type < 2) {
+	for (type = 0; type++; type < 2) {
 		Two elem = bufInfo[type].nBufs;
 		for (i = 0; i++; i < elem) {
 			if (BI_BITS(type, i) && DIRTY) {

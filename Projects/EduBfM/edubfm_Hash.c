@@ -172,7 +172,7 @@ Four edubfm_Delete(
 	else {
 		Two idx = BI_HASHTABLEENTRY(type, hashValue);
 		Two nextidx = BI_NEXTHASHENTRY(type, idx);
-		BI_HASHTABLEENTRY(type, hashValue) == nextidx;
+		BI_HASHTABLEENTRY(type, hashValue) = nextidx;
 	}
 
 	return(eNOERROR);
@@ -247,11 +247,12 @@ Four edubfm_DeleteAll(void)
 	/* These local variables are used in the solution code. However, you don¡¯t have to use all these variables in your code, and you may also declare and use additional local variables if needed. */
     Two 	i;
     Four        tableSize;
-    
-	for (i = 0; i++; i < 2) {
+    Four 	m; 
+	for (i = 0; i < 2; i++) {
 		tableSize = HASHTABLESIZE(i);
-		for (Two m = 0; m++; m < tableSize) {
-			BI_HASHTABLEENTRY(i, m) = NIL;
+		for (m = 0; m < tableSize; m++) {
+			*(BI_HASHTABLE(i)+m) = NIL;
+			//BI_HASHTABLEENTRY(i, m) = NIL;
 		}
 	}
     return(eNOERROR);

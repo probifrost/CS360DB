@@ -399,3 +399,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/linux,sublimetext,visualstudio
+Projects/EduBfM/edubfm_Hash.c.rej

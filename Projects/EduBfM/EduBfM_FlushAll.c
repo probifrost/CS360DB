@@ -87,7 +87,7 @@ Four EduBfM_FlushAll(void)
 	for (type = 0; type < 2; type++) {
 		Two elem = bufInfo[type].nBufs;
 		for (i = 0; i<elem; i++) {
-			if (BI_BITS(type, i) && DIRTY == 1) {
+			if (BI_BITS(type, i) & DIRTY == 1) {
 				e = edubfm_FlushTrain(&(BI_KEY(type,i)), type);
 				if (e < 0) {
 					return (e);

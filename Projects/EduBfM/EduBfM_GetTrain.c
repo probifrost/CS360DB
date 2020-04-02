@@ -109,17 +109,21 @@ Four EduBfM_GetTrain(
     if(IS_BAD_BUFFERTYPE(type)) ERR(eBADBUFFERTYPE_BFM);	
 
 	index = edubfm_LookUp(trainId, type);
+	printf("index = %d\n",index);
 	if (index < 0) {
-		index = edubfm_AllocTrain(type);
+		index = bfm_AllocTrain(type);
+		e = edubfm_ReadTrain(trainId,BI_BUFFER(type,index),type);
+		if(e < 0) ERR(e);
 		BI_KEY(type, index).pageNo = trainId->pageNo;
 		BI_FIXED(type, index) = 1;
-		BI_BITS(type, index) = BI_BITS(type, index) || REFER;
+		BI_BITS(type, index) = BI_BITS(type, index) | REFER;
 		edubfm_Insert(trainId, index, type);
 		retBuf = BI_BUFFER(type, index);
 	}
 	else {
 		BI_FIXED(type,index) += 1;
-		BI_BITS(type, index) || REFER;
+//		printf("check just what it is %d\n",REFER);
+		BI_BITS(type,index) = BI_BITS(type, index) | REFER;
 		retBuf = BI_BUFFER(type, index);
 	}
 

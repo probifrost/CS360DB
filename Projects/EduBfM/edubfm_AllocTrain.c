@@ -102,21 +102,22 @@ Four edubfm_AllocTrain(
 
 	/* Error check whether using not supported functionality by EduBfM */
 	if(sm_cfgParams.useBulkFlush) ERR(eNOTSUPPORTED_EDUBFM);
-
+	
+	Four nbuf = BI_NBUFS(type);
 	victim = BI_NEXTVICTIM(type);
-	for (i = 0; i++; i < BI_NBUFS(type)) {
-		if (BI_FIXED(type, (victim + i) % BI_NBUFS(type)) && REFER) {
-			BI_FIXED(type, (victim + i) % BI_NBUFS(type)) -= REFER;
-		}
-		else {
-			victim = victim + i;
-			printf("victim array index = %d",victim);
-			break;
+	for(i = 0; i < nbuf; i++) {
+		if(BI_FIXED(type,(victim + i) % nbuf) == 0) {
+			if(BI_BITS(type,(victim + i) % nbuf) & REFER == REFER) {
+				BI_BITS(type, (victim + i) % nbuf) -= REFER;
+			}else{
+				victim = victim + i;
+				break;
+			}
 		}
 	}
 	edubfm_FlushTrain(&BI_KEY(type, victim),type);
 	BI_BITS(type, victim) = ALL_0;
-	BI_NEXTVICTIM(type) = (victim + 1) % BI_NBUFS(type);
+	BI_NEXTVICTIM(type) = (victim + 1) % nbuf;
 	edubfm_Delete(&BI_KEY(type, victim), type);
    
     return( victim );

@@ -115,20 +115,15 @@ Four edubfm_Insert(
 
     if( (index < 0) || (index > BI_NBUFS(type)) )
         ERR( eBADBUFINDEX_BFM );
-
-	//충돌이 일어나지 않았을때
+	//No Collision
 	if (BI_HASHTABLEENTRY(type, hashValue) == NIL) {
 		BI_HASHTABLEENTRY(type,hashValue) = index;
-	}	
-	//충돌이 일어났을때
+	}
+	//Collision	
 	else {
-		Two curidx = *(BI_HASHTABLE(type) + hashValue);
-		Two idx = BI_NEXTHASHENTRY(type, curidx);
-		while (idx != NIL) {
-			curidx = idx;
-			idx = BI_NEXTHASHENTRY(type, idx);
-		}
-		BI_NEXTHASHENTRY(type, curidx) = index;
+		i = BI_HASHTABLEENTRY(type,hashValue);
+		BI_NEXTHASHENTRY(type,index) = i;
+		BI_HASHTABLEENTRY(type,hashValue) = index;
 	}
 
     return( eNOERROR );
@@ -170,9 +165,21 @@ Four edubfm_Delete(
 		return(eNOTFOUND_BFM);
 	}
 	else {
-		Two idx = BI_HASHTABLEENTRY(type, hashValue);
-		Two nextidx = BI_NEXTHASHENTRY(type, idx);
-		BI_HASHTABLEENTRY(type, hashValue) = nextidx;
+		i = BI_HASHTABLEENTRY(type, hashValue);
+		prev = i;
+		while(!EQUALKEY(key,&(BI_KEY(type,i)))){
+			printf("delete: index tracing: %d",i);
+			if(BI_NEXTHASHENTRY(type,i) == NIL){
+				return(eNOTFOUND_BFM);
+			}
+			prev = i;
+			i = BI_NEXTHASHENTRY(type,i);
+		}
+		if(prev == i){
+			BI_HASHTABLEENTRY(type,hashValue) = BI_NEXTHASHENTRY(type,i);
+		}else{
+			BI_NEXTHASHENTRY(type,prev) = BI_NEXTHASHENTRY(type,i);
+		}
 	}
 
 	return(eNOERROR);
@@ -216,6 +223,9 @@ Four edubfm_LookUp(
 	else {
 		idx = BI_HASHTABLEENTRY(type, hashValue);
 		while (!EQUALKEY(&(BI_KEY(type, idx)),key)) {
+			if(BI_NEXTHASHENTRY(type,idx) == NIL){
+				return (NOTFOUND_IN_HTABLE);
+			}
 			idx = BI_NEXTHASHENTRY(type, idx);
 		}
 	}

@@ -97,12 +97,14 @@ Four edubfm_FlushTrain(
 	if (RM_IS_ROLLBACK_REQUIRED()) ERR(eNOTSUPPORTED_EDUBFM);
 	index = edubfm_LookUp(trainId, type);
 	if (index < 0) return (eNOTFOUND_BFM);
-	if (BI_BITS(type, index) && DIRTY) {
+	if ((BI_BITS(type, index) && DIRTY) == 1) {
 		e = RDsM_WriteTrain(BI_BUFFER(type, index), trainId, BI_BUFSIZE(type));
-		if (e < 0) 	ERR(e);
-		((BufferTable*)bufInfo[type].bufTable)[index].bits -= 1;
-	}
-
-    return( eNOERROR );
+		if (e < 0){
+		 	ERR(e);
+		}
+		BI_BITS(type,index) /= 2;
+		BI_BITS(type,index) *= 2;
+    	}
+	return( eNOERROR );
 
 }  /* edubfm_FlushTrain */

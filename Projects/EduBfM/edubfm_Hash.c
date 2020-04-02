@@ -215,11 +215,10 @@ Four edubfm_LookUp(
 	}
 	else {
 		idx = BI_HASHTABLEENTRY(type, hashValue);
-		while (EQUALKEY(&(BI_KEY(type, idx)),key)) {
+		while (!EQUALKEY(&(BI_KEY(type, idx)),key)) {
 			idx = BI_NEXTHASHENTRY(type, idx);
 		}
 	}
-
 	return idx;
     
     

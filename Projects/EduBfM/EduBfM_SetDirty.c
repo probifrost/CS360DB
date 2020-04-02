@@ -98,7 +98,9 @@ Four EduBfM_SetDirty(
 	if (index < 0) {
 		return (eNOTFOUND_BFM);
 	}
-	BI_BITS(type, index) = BI_BITS(type, index) || DIRTY;
+	BI_BITS(type, index) /= 2;
+	BI_BITS(type, index) *= 2;
+	BI_BITS(type, index) += 1; 
 
     return( eNOERROR );
 

@@ -84,11 +84,11 @@ Four EduBfM_FlushAll(void)
     Four        e;                      /* error */
     Two         i;                      /* index */
     Four        type;                   /* buffer type */
-	for (type = 0; type++; type < 2) {
+	for (type = 0; type < 2; type++) {
 		Two elem = bufInfo[type].nBufs;
-		for (i = 0; i++; i < elem) {
-			if (BI_BITS(type, i) && DIRTY) {
-				e = edubfm_FlushTrain(BI_KEY(type,i).pageNo, type);
+		for (i = 0; i<elem; i++) {
+			if (BI_BITS(type, i) && DIRTY == 1) {
+				e = edubfm_FlushTrain(&(BI_KEY(type,i)), type);
 				if (e < 0) {
 					return (e);
 				}

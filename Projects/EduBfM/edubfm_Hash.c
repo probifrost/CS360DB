@@ -168,7 +168,7 @@ Four edubfm_Delete(
 		i = BI_HASHTABLEENTRY(type, hashValue);
 		prev = i;
 		while(!EQUALKEY(key,&(BI_KEY(type,i)))){
-			printf("delete: index tracing: %d",i);
+			//printf("delete: index tracing: %d\n",i);
 			if(BI_NEXTHASHENTRY(type,i) == NIL){
 				return(eNOTFOUND_BFM);
 			}

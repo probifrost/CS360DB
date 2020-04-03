@@ -110,7 +110,7 @@ Four edubfm_AllocTrain(
 			if(BI_BITS(type,(victim + i) % nbuf) & REFER == REFER) {
 				BI_BITS(type, (victim + i) % nbuf) -= REFER;
 			}else{
-				victim = victim + i;
+				victim = (victim + i) % nbuf;
 				break;
 			}
 		}
@@ -119,7 +119,7 @@ Four edubfm_AllocTrain(
 	BI_BITS(type, victim) = ALL_0;
 	BI_NEXTVICTIM(type) = (victim + 1) % nbuf;
 	edubfm_Delete(&BI_KEY(type, victim), type);
-   
+   	//printf("victim index = %d\n",victim);
     return( victim );
     
 }  /* edubfm_AllocTrain */
